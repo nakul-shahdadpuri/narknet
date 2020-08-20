@@ -1,4 +1,4 @@
-# Narknet [Under development]
+# Narknet 
 Object Detection for Computer Vision using YOLOv3.
 
 This repository a computer vision library , using YOLOv3 machine learning model. The program is implemented in python3 and will be converted to cython in due time.
@@ -29,6 +29,25 @@ chmod u+x GetWeights.sh
 ```
 
 ## Running narknet
+
+### Image Classification 
+```py
+import sys
+import cv2
+
+from narknet.classify import image
+
+Path = 'Path to an image'
+
+#loads model
+net,classes,output_layers,layer_names = image.load_model()
+#predicts output
+output,data = image.predict(Path,net,classes,output_layers,layer_names)
+
+print(data)
+cv2.imshow('Image', output)
+cv2.waitKey(0)
+```
 
 ## Resources
 1. Non Max Suppression 'https://towardsdatascience.com/non-maximum-suppression-nms-93ce178e177c'
