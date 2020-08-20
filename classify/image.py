@@ -6,8 +6,7 @@ import numpy as np
 
 
 
-def model(PATH_TO_WEIGHTS='../weights/yolov3.weights',PATH_TO_CFG='../cfg/yolov3.cfg',PATH_TO_NAMES='../dataset/coco.names'):
-#Load Yolo
+def load_model(PATH_TO_WEIGHTS='narknet/weights/yolov3.weights',PATH_TO_CFG='narknet/cfg/yolov3.cfg',PATH_TO_NAMES='narknet/dataset/coco.names'):
 	print("Loading Model.....")
 	net = cv2.dnn.readNet(PATH_TO_WEIGHTS,PATH_TO_CFG)
 	classes = []
@@ -20,66 +19,54 @@ def model(PATH_TO_WEIGHTS='../weights/yolov3.weights',PATH_TO_CFG='../cfg/yolov3
 	print("Model Loaded")
 	return net,classes,output_layers,layer_names
 
-# #image loading
-# try:
-# 	file = sys.argv[1]
-# 	img = cv2.imread("../tests/" + file)
-# 	height, width, channels = img.shape
-# except Exception:
-# 	print("ERROR: " +file + " NOT FOUND")
-# 	exit(0)
 
-# #detecting object
+def predict(PATH_TO_OBJECT,net,classes,output_layers,layer_names):
+#image loading
+	try:
+		img = cv2.imread(PATH_TO_OBJECT)
+		height, width, channels = img.shape
+	except :
+		print("ERROR: " +PATH_TO_OBJECT + " DOES NOT EXIST")
+		exit(0)
 
-# blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+	blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
 
-# # for b in blob:
-# # 	for n,img_blob in enumerate(b):
-# # 		cv2.imshow(str(n),img_blob)
+	net.setInput(blob)
+	outs = net.forward(output_layers)
 
-# net.setInput(blob)
-# outs = net.forward(output_layers)
+	#outs to image
+	boxes = []
+	CONFIDENCES = []
+	class_ids = []
 
-# #outs to image
-# boxes = []
-# CONFIDENCES = []
-# class_ids = []
+	for out in outs:
+		for detection in out:
+			scores = detection[5:]
+			class_id = np.argmax(scores)
+			confidence = scores[class_id]
+			if confidence > 0.5:
+				center_x = int(detection[0] * width)
+				center_y = int(detection[1] * height)
+				w = int(detection[2] * width)
+				h = int(detection[3] * height)
+				x = int(center_x - w/2)
+				y = int(center_y - h/2)  	
+				boxes.append([x, y, w, h])
+				CONFIDENCES.append(float(confidence))
+				class_ids.append(class_id)
 
-# for out in outs:
-# 	for detection in out:
-# 		scores = detection[5:]
-# 		class_id = np.argmax(scores)
-# 		confidence = scores[class_id]
-# 		if confidence > 0.5:
-# 			center_x = int(detection[0] * width)
-# 			center_y = int(detection[1] * height)
-# 			w = int(detection[2] * width)
-# 			h = int(detection[3] * height)
-# 			x = int(center_x - w/2)
-# 			y = int(center_y - h/2)  	
-# 			boxes.append([x, y, w, h])
-# 			CONFIDENCES.append(float(confidence))
-# 			class_ids.append(class_id)
+	#supressing similar boxes
+	indexes = cv2.dnn.NMSBoxes(boxes, CONFIDENCES, 0.5, 0.4)
 
-# #supressing similar boxes
-# indexes = cv2.dnn.NMSBoxes(boxes, CONFIDENCES, 0.5, 0.4)
+	objects_detected = len(boxes)
+	font = cv2.FONT_HERSHEY_PLAIN
 
-# objects_detected = len(boxes)
-# font = cv2.FONT_HERSHEY_PLAIN
+	for i in range(objects_detected):
+		if i in indexes:
+			x, y, w, h = boxes[i]
+			label = classes[class_ids[i]] + " " + str(int(CONFIDENCES[i]*100)) + "%"
+			meow = str(x)+','+str(y)+','+str(w)+','+str(h)+','+label
+			cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+			cv2.putText(img, label, (x, y+30), font, 1, (0, 0, 255), 2)
 
-# for i in range(objects_detected):
-# 	if i in indexes:
-# 		x, y, w, h = boxes[i]
-# 		label = classes[class_ids[i]] + " " + str(int(CONFIDENCES[i]*100)) + "%"
-# 		print(x,y,w,h,label)
-# 		cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-# 		cv2.putText(img, label, (x, y+30), font, 1, (0, 0, 255), 2)
-
-# cv2.imshow('Image', img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-
-if __name__ == '__main__':
-	model()
-	print('hello')
-
+	return img,meow
