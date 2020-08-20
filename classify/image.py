@@ -60,13 +60,14 @@ def predict(PATH_TO_OBJECT,net,classes,output_layers,layer_names):
 
 	objects_detected = len(boxes)
 	font = cv2.FONT_HERSHEY_PLAIN
-
+	meows = []
 	for i in range(objects_detected):
 		if i in indexes:
 			x, y, w, h = boxes[i]
 			label = classes[class_ids[i]] + " " + str(int(CONFIDENCES[i]*100)) + "%"
 			meow = str(x)+','+str(y)+','+str(w)+','+str(h)+','+label
+			meows.append(meow)
 			cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
 			cv2.putText(img, label, (x, y+30), font, 1, (0, 0, 255), 2)
 
-	return img,meow
+	return img,meows
