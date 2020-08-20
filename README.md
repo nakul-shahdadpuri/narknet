@@ -3,8 +3,6 @@ Object Detection for Computer Vision using YOLOv3.
 
 This repository a computer vision library , using YOLOv3 machine learning model. The program is implemented in python3 and will be converted to cython in due time.
 
-The abstracted procedure in the development and functioning of this process is:
-
 ## Dependencies:
 1. **Python --3.7.6**
 2. **Opencv --4.2.0**
@@ -19,12 +17,6 @@ The abstracted procedure in the development and functioning of this process is:
 3. After set up of conda environment, install opencv2 and pandas.
 4. **conda install -c menpo opencv (For opencv)**
 5. **conda install pandas (For Pandas)**
-6. Set up for Object tracker libraries below.
-<!-- ```sh
-conda env create -f setup.yml
-conda activate nayanam
-pip install -r setup.txt
-``` -->
 
 ## Installation
 
