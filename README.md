@@ -1,7 +1,7 @@
 # Narknet 
 Object Detection for Computer Vision using YOLOv3.
 
-This repository a computer vision library , using YOLOv3 machine learning model. The program is implemented in python3 and will be converted to cython in due time.
+This repository is a computer vision library , using YOLOv3 machine learning model. The program is implemented in python3 and will be converted to cython in due time.
 
 ## Dependencies:
 1. **Python --3.7.6**
