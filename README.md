@@ -57,6 +57,6 @@ cv2.waitKey(0)
 7. Deep Sort 'https://medium.com/analytics-vidhya/yolo-v3-real-time-object-tracking-with-deep-sort-4cb1294c127f'
 8. Open Cv wiki: https://en.wikipedia.org/wiki/OpenCV
 
-## Liscensing 
-All the code in this repo follows the OpenBSD lisenscing, do whatever you want with the code.
+## Licensing 
+All the code in this repo follows the OpenBSD licenscing, do whatever you want with the code.
 
