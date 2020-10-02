@@ -14,7 +14,6 @@ This repository is a computer vision library , using YOLOv3 machine learning mod
 ## Setup:
 1. **conda install -c menpo opencv (For opencv)**
 2. **conda install pandas (For Pandas)**
-3. It is advisable to use a beefy computer for this porject. It will help you in computing the results faster.
 
 ## Installation
 
@@ -58,5 +57,5 @@ cv2.waitKey(0)
 8. Open Cv wiki: https://en.wikipedia.org/wiki/OpenCV
 
 ## Licensing 
-All the code in this repo follows the OpenBSD licenscing, do whatever you want with the code.
+MIT License
 
